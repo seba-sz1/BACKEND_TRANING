@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOME</title>
+</head>
+<body>
+    <h1>GENERATOR HASEŁ</h1>
+    <section>
+        <form method="post" action="{% url 'password' %}">
+            <div>
+            <label for="length">Podaj długość hasła:</label>
+            <select required>
+                <option value="" selected disabled>WYBIERZ DŁUGOŚĆ</option>
+                <option value= "10" >10 znaków</option>
+                <option value= "9" >9 znaków</option>
+                <option value= "8" >8 znaków</option>
+            </select>
+            </div>
+            <div>
+                <input type="checkbox" name="checkbox1" id="CHECK" />
+                <label for="checkbox">WIELKIE LITERY:</label>
+            </div>
+            <div>
+                <input type="checkbox" name="checkbox2" id="CHECK" />
+                <label for="checkbox">LICZBY:</label>
+            </div>
+            <div>
+                <input type="checkbox" name="checkbox3" id="CHECK" />
+                <label for="checkbox">ZNAKI SPECNE:</label>
+            </div>
+
+          {% csrf_token %}
+          <button type="submit">WYGENERUJ HASŁO</button>
+        </form>
+      </section>
+</body>
+<footer>
+    <p>SEBA</p>
+</footer>
+</html>
