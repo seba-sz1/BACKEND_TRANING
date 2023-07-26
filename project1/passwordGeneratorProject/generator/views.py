@@ -1,9 +1,17 @@
 from django.shortcuts import render
-
-
+from .ulilities import genPass
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
 
 def password(request):
-    return render(request, 'password.html')
+    length = int(request.POST.get('length'))
+    numbers = request.POST.get('numbers')
+    big = request.POST.get('big')
+    special = request.POST.get('specials')
+    password = genPass(length, big, numbers, special)
+    
+    return render(request, 'password.html',{'password': password})
+
+def about(request):
+    return render(request, 'about.html')
