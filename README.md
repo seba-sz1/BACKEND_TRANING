@@ -1,5 +1,5 @@
 
-# BACKEND_TRANING
+# BACKEND TRANING
 
 
 ## Frist Project (named project1) is simple password generator

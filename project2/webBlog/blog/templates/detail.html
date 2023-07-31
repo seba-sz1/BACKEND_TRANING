@@ -6,5 +6,9 @@
     <h3>{{post.title}}</h3>
     <h4>{{post.date}}</h4>
     <p>{{post.text}}</p>
+    {% if post.image %}
+    <img src="{{post.image.url}}" alt="Post Image">
+    {% endif %}
+    
 </body>
 {% endblock content%}
