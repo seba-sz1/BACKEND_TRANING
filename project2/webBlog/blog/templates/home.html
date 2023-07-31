@@ -4,14 +4,14 @@
     
 
 <body>
-    <ul>
-        {% for post in posts %}
-            <a href="{% url 'detail' post.id %}"><h3>{{post.title}}</h3></a>
-            <h4>{{post.date}}</h4>
-            <p>{{post.text}}</p>
+    <h2>I have written {{posts.count}} post{{posts|pluralize}}</h2>
+        
+    {% for post in posts %}
+        <a href="{% url 'detail' post.id %}"><h3>{{post.title}}</h3></a>
+        <h4>{{post.date|date:"F j, Y"}}</h4>
+        <p>{{post.text}}</p>
             
-        {% endfor %}
-    </ul>
+    {% endfor %}
 </body>
 
 
