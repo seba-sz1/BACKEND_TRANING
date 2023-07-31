@@ -1,0 +1,43 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #2c2c2c;
+    color: #fff;
+  }
+  
+  a {
+    color: #ff4d4d;
+  }
+  
+  a:hover {
+    color: #ff1a1a;
+  }
+  
+  h1, h2, h3, h4, h5, h6 , label {
+    color: #ff4d4d;
+  }
+  
+  button {
+    background-color: #ff4d4d;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #ff1a1a;
+  }
+
+  .type.checkbox:hover {
+    background-color: blue;
+  }
+  .type.checkbox {
+    background-color: #b19a9a;
+  }
+
+  select {
+    background-color: #b19a9a;
+  }
+
