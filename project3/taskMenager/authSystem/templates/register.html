@@ -1,1 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content%}
+
 <h1>REGISTER PAGE</h1>
+<p1 style="text-align:20px">{{message}}</p1>
+{% if passwordErrors %}
+    <p2><ul>
+        {% for paswordError in passwordErrors %}
+            <li>{{ paswordError }}</li>
+        {% endfor %}
+    </ul></p2>
+{% endif %}
+
+<form action="{% url 'register' %}" method="post">
+    <p>USERNAME: {{ form.username }}</p>
+    <p>EMAIL: {{ form.email }}</p>
+    <p>PASSWORD: {{ form.password1 }}</p>
+    <p>CONFIRM PASWORD: {{ form.password2 }}</p>
+    {% csrf_token %}
+    <button type="submit">REGISTER</button>
+</form>
+
+{% endblock content %}
