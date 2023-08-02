@@ -4,7 +4,9 @@
     <h1>HOME</h1>
     {% if user.is_authenticated %}
         <h3>Witaj {{user.username}} !</h3>
-        <a href="{% url 'logoutUser' %}">LOG OUT</a>
+        <p><a href="{% url 'logoutUser' %}">LOG OUT</a></p>
+        <p><a href="{% url 'tasks' %}">VIEW TASKS</a></p>
+        <p><a href="{% url 'createTask' %}">CREATE TASK</a></p>
     {% else %}
         <P></P><a href="{% url 'register' %}">REGISTER</a></P>
         <P><a href="{% url 'loginUser' %}">LOG IN</a></P>
