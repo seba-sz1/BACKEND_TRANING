@@ -5,8 +5,3 @@ from django.contrib.auth import logout
 def home(request):
     return render(request, 'home.html')
 
-def logoutUser(request):
-    if request.method == 'POST':
-        logout(request)
-        return redirect('home')
-    return render(request, 'logout.html')

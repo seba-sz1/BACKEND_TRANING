@@ -5,7 +5,7 @@ import re
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
  
 # Define a function for validating an Email
 def check_email(email):
@@ -62,3 +62,16 @@ def loginUser(request):
         if user is not None:
             login(request, user)
             return redirect('home')
+        else:
+            usernameExit = User.objects.filter(username=username).exists()
+            if usernameExit:
+                errorMessage = 'Authentication failed - Incorrect password'
+            else:
+                errorMessage = f'Acount with username "{username}" does not exist.'
+            return render(request,'loginUser.html', {'Message':errorMessage,"form": AuthenticationForm()}) 
+    
+def logoutUser(request):
+    if request.method == 'POST':
+        logout(request)
+        return redirect('home')
+    return render(request, 'logout.html')
