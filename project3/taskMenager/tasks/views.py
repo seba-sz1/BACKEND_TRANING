@@ -20,3 +20,9 @@ def create_task(request):
         if form.is_valid():
             task = form.save(commit=False)
             task.user = request.user #dodanie zalogowanego użytkowanika do danego taska
+            task.save()
+            return redirect('tasks')
+        else:
+            error = "Something went wrong"
+            return render(request, 'createTask.html', {'Form': TaskForm, 'Error': error})
+    
