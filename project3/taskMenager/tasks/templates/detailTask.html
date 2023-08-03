@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content%}
+    <h1>Detail Task</h1>
+    {% if error %}
+    <h2> {{ error }}</h2>
+    {% endif %}
+    <form action="{% url 'detail' task.id %}" method="post">
+        {{form}}
+        {% csrf_token %}
+        <button type="submit">EDIT</button> 
+    </form>
+    <p>CREATED: {{ task.createDate }} </p>
+<h3><a href="{% url 'deleteTask' task.id %}">DELETE</a></h3>
+
+{% endblock content %}

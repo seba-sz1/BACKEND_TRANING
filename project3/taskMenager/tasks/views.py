@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
 from .models import Task
 from .forms import TaskForm
@@ -26,3 +26,22 @@ def create_task(request):
             error = "Something went wrong"
             return render(request, 'createTask.html', {'Form': TaskForm, 'Error': error})
     
+def deleteTask(request, taskID):
+    task = get_object_or_404(Task, id = taskID)
+    task.delete()
+    return redirect('tasks')
+
+
+def detailTask(request, taskID):
+    task = get_object_or_404(Task, id = taskID)
+    if request.method == 'GET':
+        form = TaskForm(instance=task) #formulaż wypełni się danymi z task
+        return render(request, 'detailTask.html', {'form': form, 'task': task})
+    else: #POST
+        form = TaskForm(request.POST, instance=task) #formula
+        if form.is_valid():
+            form.save()
+            return redirect('tasks')
+        else:
+            error = 'Something went wrong.'
+            return render(request, 'detailTask.html', {'form': form, 'task': task, 'error': error})
