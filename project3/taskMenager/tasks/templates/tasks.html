@@ -2,11 +2,23 @@
 
 {% block content%}
     <h1>TASKS</h1>
- <ul></ul>
-    {% for task in Tasks %}
+ <ul>
+    {% if current %}
+    <h3>CURRENT TASKS:</h3>
+    {% for task in current %}
     <h4>
         <a href="{% url 'detail' task.id %}">{{task.title}}</a>
     </h4>
     {% endfor %}
+    {% endif %}
+
+    {% if complited %}
+    <h3>COMPLITED TASKS:</h3>
+    {% for task in complited %}
+    <h4>
+        <a href="{% url 'detail' task.id %}">{{task.title}}</a>
+    </h4>
+    {% endfor %}
+    {% endif %}
 </ul>
 {% endblock content %}

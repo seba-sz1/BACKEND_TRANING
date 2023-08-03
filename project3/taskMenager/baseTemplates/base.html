@@ -15,7 +15,7 @@
     {% if user.is_authenticated %}
         <p><a href="{% url 'tasks' %}">VIEW TASKS</a></p>
         <p><a href="{% url 'createTask' %}">CREATE TASK</a></p>
-        <p><a href="{% url 'tasks' %}">VIEW TASKS</a></p>
+        <p><a href="{% url 'logoutUser' %}">LOG OUT</a></p>
     {% else %}
         <P></P><a href="{% url 'register' %}">REGISTER</a></P>
         <P><a href="{% url 'loginUser' %}">LOG IN</a></P>

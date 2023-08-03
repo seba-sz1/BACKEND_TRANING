@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
 from .models import Task
 from .forms import TaskForm
+from django.utils import timezone
 
 # Create your views here.
 def home(request):
@@ -9,8 +10,11 @@ def home(request):
 
 # widok zadań dla wybranego użytkownika
 def tasks(request):
-    userTasks = Task.objects.filter(user=request.user)
-    return render(request, 'tasks.html', {'Tasks': userTasks})
+    currentTasks = Task.objects.filter(user=request.user,
+                                       completeDate__isnull=True)
+    complitedTasks = Task.objects.filter(user=request.user,
+                                       completeDate__isnull=False)
+    return render(request, 'tasks.html', {'current': currentTasks, 'complited':complitedTasks})
 
 def create_task(request):
     if request.method == 'GET':
@@ -45,3 +49,10 @@ def detailTask(request, taskID):
         else:
             error = 'Something went wrong.'
             return render(request, 'detailTask.html', {'form': form, 'task': task, 'error': error})
+
+
+def completeTask(request, taskID):
+    task = get_object_or_404(Task, id = taskID)
+    task.completeDate = timezone.now()
+    task.save()
+    return redirect('tasks')

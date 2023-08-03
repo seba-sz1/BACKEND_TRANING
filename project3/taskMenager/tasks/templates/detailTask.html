@@ -9,8 +9,15 @@
         {{form}}
         {% csrf_token %}
         <button type="submit">EDIT</button> 
-    </form>
-    <p>CREATED: {{ task.createDate }} </p>
+    </form>   
+
+{% if  task.completeDate %}
+<p>CREATED: {{ task.createDate }} </p>
+{% else %}
+<h3><a href="{% url 'complete' task.id %}">Mark as completed</a></h3>
+{% endif %}
+
 <h3><a href="{% url 'deleteTask' task.id %}">DELETE</a></h3>
+
 
 {% endblock content %}

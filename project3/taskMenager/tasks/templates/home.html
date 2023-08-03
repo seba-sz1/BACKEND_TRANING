@@ -4,6 +4,7 @@
     <h1>HOME</h1>
     {% if user.is_authenticated %}
         <h3>Witaj {{user.username}} !</h3>
+        <h6>Ostanie logowanie - {{user.last_login}}</h6>
     {% endif %}
 
 {% endblock content %}
