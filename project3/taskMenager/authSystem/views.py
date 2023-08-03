@@ -6,7 +6,8 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
- 
+from django.contrib.auth.decorators import login_required
+
 # Define a function for validating an Email
 def check_email(email):
     regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
@@ -69,7 +70,8 @@ def loginUser(request):
             else:
                 errorMessage = f'Acount with username "{username}" does not exist.'
             return render(request,'loginUser.html', {'Message':errorMessage,"form": AuthenticationForm()}) 
-    
+
+@login_required
 def logoutUser(request):
     if request.method == 'POST':
         logout(request)
