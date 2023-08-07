@@ -13,9 +13,8 @@ def password(request):
     big = request.POST.get('big')
     special = request.POST.get('specials')
     password = genPass(length, big, numbers, special)
-    
-    return render(request, 'password.html', {'password': password})
 
+    return render(request, 'password.html', {'password': password})
 
 
 def about(request):
