@@ -26,15 +26,17 @@ def list_create_articles(request):
 @api_view(['GET','PUT','DELETE'])
 def article_detail(request, articleID):
     article = get_object_or_404(Article, id=articleID)
-    serializer = ArticleSerializer(article, data=request.data)
     if request.method == 'GET':
+        serializer = ArticleSerializer(article)
         return Response(serializer.data)
     elif request.method == 'PUT':
+        serializer = ArticleSerializer(article, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE':
         article.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
