@@ -89,26 +89,41 @@ from rest_framework.views import APIView
 ################################################################
 # widoki mixinowe MIXINSViews
 
-class ListCreateArticle(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+# class ListCreateArticle(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+#     queryset = Article.objects.all()
+#     serializer_class = ArticleSerializer
+
+#     def get(self, request, *args, **kwargs):
+#         return self.list(request, *args, **kwargs)
+    
+#     def post(self, request, *args, **kwargs):
+#         return self.create(request, *args, **kwargs)
+
+
+# class DetailDeleteArticle(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
+#     queryset = Article.objects.all()    #pula obiektów, które dajmy do przetwarzania w danej klasie 
+#     serializer_class = ArticleSerializer
+    
+#     def get(self, request, *args, **kwargs):
+#         return self.retrieve(request, *args, **kwargs)
+    
+#     def put(self, request, *args, **kwargs):
+#         return self.partial_update(request, *args, **kwargs)
+        
+#     def delete(self, request, *args, **kwargs):
+#         return self.destroy(request, *args, **kwargs)
+
+
+
+################################################################
+# widoki generyczne
+
+class ListCreateArticle(generics.ListCreateAPIView):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-    
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
 
-
-class DetailDeleteArticle(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
+class DetailDeleteArticle(generics.RetrieveUpdateDestroyAPIView):
     queryset = Article.objects.all()    #pula obiektów, które dajmy do przetwarzania w danej klasie 
     serializer_class = ArticleSerializer
-    
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
-    
-    def put(self, request, *args, **kwargs):
-        return self.partial_update(request, *args, **kwargs)
-        
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
+
