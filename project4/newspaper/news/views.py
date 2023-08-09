@@ -9,7 +9,7 @@ from rest_framework import status
 # Create your views here.
 
 @api_view(['GET', 'POST'])
-def list_create_articles(request):
+def list_create_articles(request, format=None):
     if request.method == 'GET':
         articles = Article.objects.all()
         serializer = ArticleSerializer(articles, many=True)
@@ -24,7 +24,7 @@ def list_create_articles(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 @api_view(['GET','PUT','DELETE'])
-def article_detail(request, articleID):
+def article_detail(request, articleID, format=None):
     article = get_object_or_404(Article, id=articleID)
     if request.method == 'GET':
         serializer = ArticleSerializer(article)
