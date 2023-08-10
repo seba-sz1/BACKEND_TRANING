@@ -139,5 +139,5 @@ class ListCreateUsers(generics.ListCreateAPIView):
     def get_permissions(self):
         #permission_classes = [permissions.IsAdminUser] if self.request.method == 'GET' else [permissions.AllowAny]
         #return [permission() for permission in ([permissions.IsAdminUser] if self.request.method == 'GET' else [permissions.AllowAny] ) ]
-        return [permissions.IsAdminUser() if self.request.method == 'GET' else permissions.AllowAny]
+        return [permissions.IsAdminUser() if self.request.method == 'GET' else permissions.AllowAny()]
 
