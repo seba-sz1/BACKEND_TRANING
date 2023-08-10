@@ -7,6 +7,8 @@ from rest_framework.decorators import api_view
 from rest_framework import status, mixins, generics
 from rest_framework.views import APIView
 from django.contrib.auth.models import User
+from rest_framework import permissions
+from .permissions import IsOwnerOrReadOnly
 
 
 # Create your views here.
@@ -127,8 +129,15 @@ class ListCreateArticle(generics.ListCreateAPIView):
 class DetailDeleteArticle(generics.RetrieveUpdateDestroyAPIView):
     queryset = Article.objects.all()  # pula obiektów, które dajmy do przetwarzania w danej klasie
     serializer_class = ArticleSerializer
+    permission_classes = [IsOwnerOrReadOnly]
 
 
 class ListCreateUsers(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    
+    def get_permissions(self):
+        #permission_classes = [permissions.IsAdminUser] if self.request.method == 'GET' else [permissions.AllowAny]
+        #return [permission() for permission in ([permissions.IsAdminUser] if self.request.method == 'GET' else [permissions.AllowAny] ) ]
+        return [permissions.IsAdminUser() if self.request.method == 'GET' else permissions.AllowAny]
+

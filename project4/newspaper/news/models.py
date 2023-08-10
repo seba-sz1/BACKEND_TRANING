@@ -15,7 +15,7 @@ class Article(models.Model):
         return f"{self.title} | {self.owner}"
     
 @receiver(post_save, sender=User)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
+def create_auth_token(sender, **kwargs):
     if kwargs['created']:
         Token.objects.create(user=kwargs['instance'])
     # print("Receiver działa")
