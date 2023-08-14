@@ -11,6 +11,7 @@ from rest_framework import permissions
 from .permissions import IsOwnerOrReadOnly
 from rest_framework.reverse import reverse
 from .utilities import UserPagination
+from rest_framework import filters
 
 # Create your views here.
 
@@ -32,23 +33,23 @@ from .utilities import UserPagination
 #         else:
 #             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-#Paginacja w widoku funkcyjnym
-@api_view(['GET', 'POST'])
-def list_create_articles(request, format=None):
-    if request.method == 'GET':
-        pagination_class = UserPagination()
-        articles = Article.objects.all()
-        pages = pagination_class.paginate_queryset(queryset=articles, 
-                                                        request=request)
-        serializer = ArticleSerializer(pages, many=True)
-        return pagination_class.get_paginated_response(serializer.data)
-    else:
-        serializer = ArticleSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# #Paginacja w widoku funkcyjnym
+# @api_view(['GET', 'POST'])
+# def list_create_articles(request, format=None):
+#     if request.method == 'GET':
+#         pagination_class = UserPagination()
+#         articles = Article.objects.all()
+#         pages = pagination_class.paginate_queryset(queryset=articles, 
+#                                                         request=request)
+#         serializer = ArticleSerializer(pages, many=True)
+#         return pagination_class.get_paginated_response(serializer.data)
+#     else:
+#         serializer = ArticleSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         else:
+#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #
 # @api_view(['GET', 'PUT', 'DELETE'])
@@ -160,9 +161,11 @@ def list_create_articles(request, format=None):
 ################################################################
 # widoki generyczne
 
-# class ListCreateArticle(generics.ListCreateAPIView):
-#     queryset = Article.objects.all()
-#     serializer_class = ArticleSerializer
+class ListCreateArticle(generics.ListCreateAPIView):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering = ['-date']
 
 
 class DetailDeleteArticle(generics.RetrieveUpdateDestroyAPIView):
