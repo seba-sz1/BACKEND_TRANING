@@ -9,7 +9,8 @@ from rest_framework.views import APIView
 from django.contrib.auth.models import User
 from rest_framework import permissions
 from .permissions import IsOwnerOrReadOnly
-
+from rest_framework.reverse import reverse
+from .utilities import UserPagination
 
 # Create your views here.
 
@@ -30,7 +31,25 @@ from .permissions import IsOwnerOrReadOnly
 #             return Response(serializer.data, status=status.HTTP_201_CREATED)
 #         else:
 #             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#
+
+#Paginacja w widoku funkcyjnym
+@api_view(['GET', 'POST'])
+def list_create_articles(request, format=None):
+    if request.method == 'GET':
+        pagination_class = UserPagination()
+        articles = Article.objects.all()
+        pages = pagination_class.paginate_queryset(queryset=articles, 
+                                                        request=request)
+        serializer = ArticleSerializer(pages, many=True)
+        return pagination_class.get_paginated_response(serializer.data)
+    else:
+        serializer = ArticleSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 #
 # @api_view(['GET', 'PUT', 'DELETE'])
 # def article_detail(request, articleID, format=None):
@@ -66,6 +85,26 @@ from .permissions import IsOwnerOrReadOnly
 #             return Response(serializer.data, status=status.HTTP_201_CREATED)
 #         else:
 #             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#Dodanie paginacji do widoku klasowego
+# class ListCreateArticle(APIView):
+#     pagitation_class = UserPagination()
+
+#     def get(self, request, format=None):
+#         articles = Article.objects.all()
+#         pages = self.pagitation_class.paginate_queryset(queryset=articles, 
+#                                                         request=request)
+#         serializer = ArticleSerializer(pages, many=True)
+#         return self.pagitation_class.get_paginated_response(serializer.data)
+
+#     def post(self, request, format=None):
+#         serializer = ArticleSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         else:
+#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 # class DetailDeleteArticle(APIView):    
@@ -121,9 +160,9 @@ from .permissions import IsOwnerOrReadOnly
 ################################################################
 # widoki generyczne
 
-class ListCreateArticle(generics.ListCreateAPIView):
-    queryset = Article.objects.all()
-    serializer_class = ArticleSerializer
+# class ListCreateArticle(generics.ListCreateAPIView):
+#     queryset = Article.objects.all()
+#     serializer_class = ArticleSerializer
 
 
 class DetailDeleteArticle(generics.RetrieveUpdateDestroyAPIView):
@@ -135,9 +174,24 @@ class DetailDeleteArticle(generics.RetrieveUpdateDestroyAPIView):
 class ListCreateUsers(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    pagination_class = UserPagination
     
     def get_permissions(self):
-        #permission_classes = [permissions.IsAdminUser] if self.request.method == 'GET' else [permissions.AllowAny]
-        #return [permission() for permission in ([permissions.IsAdminUser] if self.request.method == 'GET' else [permissions.AllowAny] ) ]
+        #permission_classes = [permissions.IsAdminUser()] if self.request.method == 'GET' else [permissions.AllowAny()]
+        #return [permission() for permission in ([permissions.IsAdminUser()] if self.request.method == 'GET' else [permissions.AllowAny()] ) ]
         return [permissions.IsAdminUser() if self.request.method == 'GET' else permissions.AllowAny()]
 
+# @api_view(['GET'])
+# def reverse_points(request):
+#     endpoints = [reverse('articles'), reverse('users'), reverse('get_token')]
+#     return Response(endpoints)
+
+class APIRoot(APIView):
+    def get(self, request, format=None):
+        links = {
+            'articles':reverse ('articles', request=request),
+            'users':reverse ('users', request=request),
+            'get_token':reverse ('get_token', request=request)
+
+        }
+        return Response(links)

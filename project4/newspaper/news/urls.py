@@ -5,10 +5,11 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 
 urlpatterns = [
-    path('articles/', views.ListCreateArticle.as_view()),
-    path('articles/<int:pk>/', views.DetailDeleteArticle.as_view()),
-    path('users/', views.ListCreateUsers.as_view()),
-    path('get-token/', obtain_auth_token),
+    path('articles/', views.list_create_articles, name= 'articles'),
+    path('articles/<int:pk>/', views.DetailDeleteArticle.as_view(), name='article-detail'),
+    path('users/', views.ListCreateUsers.as_view(), name= 'users'),
+    path('get-token/', obtain_auth_token, name= 'get_token'),
+    path('', views.APIRoot.as_view(), name= 'home')
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
