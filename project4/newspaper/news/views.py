@@ -166,6 +166,8 @@ class ListCreateArticle(generics.ListCreateAPIView):
     serializer_class = ArticleSerializer
     filter_backends = [filters.OrderingFilter]
     ordering = ['-date']
+    def perform_create(self, serializer):
+        serializer.save(owner = self.request.user)
 
 
 class DetailDeleteArticle(generics.RetrieveUpdateDestroyAPIView):

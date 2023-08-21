@@ -38,7 +38,7 @@ class UserSerializer(serializers.ModelSerializer):
     articles = serializers.HyperlinkedRelatedField(
         many=True,
         queryset=Article.objects.all(),
-        view_name= 'article-detail'
+        view_name= 'articleDetail'
     )
 
 
