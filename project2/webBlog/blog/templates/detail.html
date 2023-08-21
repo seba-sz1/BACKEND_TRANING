@@ -9,6 +9,11 @@
     {% if post.image %}
     <img src="{{post.image.url}}" alt="Post Image">
     {% endif %}
-    
 </body>
+<footer>
+    <h4>Recently Read</h4>
+    {% for id, title in recently_read %}
+    <h5><a href="{% url 'detail' id %}">{{title}}</a></h5>
+    {% endfor %}
+</footer>
 {% endblock content%}

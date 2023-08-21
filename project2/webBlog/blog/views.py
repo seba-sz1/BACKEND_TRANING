@@ -15,10 +15,22 @@ def about(request):
 
 
 def detail(request, postId):
-    try:
-        post = BlogPost.objects.get(id=postId)
-    except BlogPost.DoesNotExist:
-        raise Http404("This article does not exist")
+    post = get_object_or_404(BlogPost, id=postId)
+
+    if 'recently_read' in request.session:
+        request.session['recently_read'].append([post.id, post.title])
+        for (id, title) in request.session.get('recently_read'):
+            if post.id == id:
+                request.session['recently_read'].remove([id, title])
+
+        request.session['recently_read'].insert(0,[post.id, post.title])    # add id and title in first place
+        if len(request.session['recently_read']) > 4:
+            request.session['recently_read'].pop()
+
     else:
-        # post = get_object_or_404(BlogPost, id=postId)
-        return render(request, 'detail.html', {'post': post})
+        request.session['recently_read'] = [[post.id, post.title]]
+
+
+    request.session.modified = True # potwierdzenie zmodyfikowania sesji
+    
+    return render(request, 'detail.html', {'post': post, 'recently_read': request.session['recently_read'][1:]})

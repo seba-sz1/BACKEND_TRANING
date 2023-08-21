@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .ulilities import genPass
+from .utilities import genPass
 
 
 # Create your views here.
